@@ -1,53 +1,51 @@
-const Maitre = require("./Maitres");
-const Chien = require("./Chiens");
-const Puce = require("./Puces");
-const Examen = require("./Examens");
 const Passer = require("./Passer");
-const prorpietaire = require("./proprietaire");
+const domaine = require("../Service/domaine");
+const etang = require ("../etang");
+const permis = require ("../permis");
+const proprietaire = require("../proprietaire");
 
 
 
-
-
-// relation 1 à N (maitre -> chien)
-Maitre.hasMany(Chien, {
-  foreignKey: "id_maitre",
-  as: "chiens",
+// relation N a N 
+proprietaire.belongsToMany(domaine, {
+  through: entretenir,
+  foreignKey: "id_proprietaire",
+  as: "domaine",
 });
-Chien.belongsTo(Maitre, {
-  foreignKey: "id_maitre",
-  as: "maitre",
+domaine.belongsToMany(proprietaire, {
+  through: entretenir,
+  foreignKey: "id_domaine",
+  as: "proprietaire",
 });
 
-// relation 1 à 1 (chien -> puce)
-Chien.hasOne(Puce, {
-  foreignKey: "id_chien",
-  as: "puces",
-});
-Puce.belongsTo(Chien, {
-  foreignKey: "id_chien",
-  as: "chiens",
-});
-// relation N a N (chien -> examen)
+// relation 1 à 1 (client -> permis)
 
-Chien.belongsToMany(Examen, {
-  through: Passer,
-  foreignKey: "id_chien",
-  as: "examens",
+client.hasOne(permis, {
+  foreignKey: "id_client",
+  as: "permis",
 });
-Examen.belongsToMany(Chien, {
-  through: Passer,
-  foreignKey: "id_Examen",
-  as: "chiens",
+permis.belongsTo(client, {
+  foreignKey: "id_permis",
+  as: "client",
+});
+
+// relation 1 à N (poisson -> etang)
+poisson.hasMany(etang, {
+  foreignKey: "id_poisson",
+  as: "etang",
+});
+permis.belongsTo(poisson, {
+  foreignKey: "id_permis",
+  as: "poisson",
 });
 
 
 
 module.exports = {
-  Maitre,
-  Chien,
-  Puce,
-  Examen,
   Passer,
-  prorpietaire,
+  proprietaire,
+  domaine,
+  entretenir,
+  detenir,
+
 };
