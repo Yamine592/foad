@@ -1,0 +1,56 @@
+CREATE TABLE Client(
+   id_client VARCHAR(50),
+   nom VARCHAR(50),
+   prenom VARCHAR(50),
+   photo VARCHAR(50),
+   PRIMARY KEY(id_client)
+);
+
+CREATE TABLE Proprietaire(
+   id_proprietaire VARCHAR(50),
+   numero_etang VARCHAR(50),
+   nom VARCHAR(50),
+   PRIMARY KEY(id_proprietaire)
+);
+
+CREATE TABLE permis(
+   id_permis VARCHAR(50),
+   nom VARCHAR(50),
+   prenom VARCHAR(50),
+   photo VARCHAR(50),
+   adresse VARCHAR(150),
+   id_client VARCHAR(50) NOT NULL,
+   PRIMARY KEY(id_permis),
+   UNIQUE(id_client),
+   FOREIGN KEY(id_client) REFERENCES Client(id_client)
+);
+
+CREATE TABLE Etang(
+   id_etang VARCHAR(50),
+   type_etang VARCHAR(150),
+   PRIMARY KEY(id_etang)
+);
+
+CREATE TABLE domaine(
+   id_domaine VARCHAR(50),
+   nom VARCHAR(50),
+   adresse VARCHAR(50),
+   PRIMARY KEY(id_domaine)
+);
+
+CREATE TABLE Poisson(
+   id_poisson VARCHAR(50),
+   nom VARCHAR(50),
+   type_poisson VARCHAR(50),
+   id_etang VARCHAR(50) NOT NULL,
+   PRIMARY KEY(id_poisson),
+   FOREIGN KEY(id_etang) REFERENCES Etang(id_etang)
+);
+
+CREATE TABLE entretenir(
+   id_proprietaire VARCHAR(50),
+   id_domaine VARCHAR(50),
+   PRIMARY KEY(id_proprietaire, id_domaine),
+   FOREIGN KEY(id_proprietaire) REFERENCES Proprietaire(id_proprietaire),
+   FOREIGN KEY(id_domaine) REFERENCES domaine(id_domaine)
+);
